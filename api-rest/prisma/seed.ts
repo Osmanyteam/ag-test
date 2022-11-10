@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 async function main() {
-  const categories = ['politics', 'social', 'philosophical', 'history', 'random'].map((name) => ({ name }));
+  const categories = ['politics', 'social', 'philosophical', 'history', 'random', 'music', 'university', 'poetry'].map((name) => ({ name }));
   await prisma.category.createMany({ data: categories });
 }
 
