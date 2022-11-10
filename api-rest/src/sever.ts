@@ -20,7 +20,7 @@ export default class Server {
   }
 
   public listen() {
-    this.server.listen({ port: env.port, host: '192.168.100.8' }, async (err, address) => {
+    this.server.listen({ port: env.port, }, async (err, address) => {
       if (err) {
         console.error(err);
         process.exit(1);

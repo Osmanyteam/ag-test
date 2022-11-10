@@ -5,8 +5,8 @@
   "main": "src/index.ts",
   "scripts": {
     "migration:test": "dotenv -e .env.test -- prisma migrate deploy",
-    "test": "yarn migration:test && tap --ts --no-check-coverage --after=test/teardown.ts ",
-    "test:watch": "yarn migration:test && tap -w --ts --no-check-coverage --after=test/teardown.js",
+    "test": "yarn migration:test && tap --ts --no-check-coverage --after=test/teardown.test.ts ",
+    "test:watch": "yarn migration:test && tap -w --ts --no-check-coverage --after=test/teardown.test.ts",
     "build": "tsc -p tsconfig.json",
     "start": "yarn build && node build/index.js",
     "dev": "nodemon --watch 'src/**' --ext 'ts,json' --ignore 'src/**/*.spec.ts' --exec ts-node src/index.ts",

@@ -1,7 +1,7 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import type { Static } from '@sinclair/typebox';
-import QuestionService from './question.service';
-import type validation from './question.validation';
+import QuestionService from './service';
+import type validation from './validation';
 
 const questionService = new QuestionService();
 

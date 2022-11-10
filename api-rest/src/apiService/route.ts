@@ -1,7 +1,7 @@
 import type { Static } from '@sinclair/typebox';
 import type { FastifyInstance } from 'fastify';
-import validation from './question.validation';
-import controller from './question.controller';
+import validation from './validation';
+import controller from './controller';
 
 export default (fastify: FastifyInstance, _: any, done: () => void) => {
 

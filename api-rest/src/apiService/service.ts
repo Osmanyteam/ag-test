@@ -1,6 +1,6 @@
-import prisma from '../../config/prisma';
-import type { PaginateOptions, PaginateType } from '../../utils/paginated';
-import paginated from '../../utils/paginated';
+import prisma from '../config/prisma';
+import type { PaginateOptions, PaginateType } from '../utils/paginated';
+import paginated from '../utils/paginated';
 import type AnswerType from './types/answer.type';
 import type { CategoryType } from './types/category.type';
 import type QuestionType from './types/question.type';
@@ -61,7 +61,6 @@ export default class QuestionService {
         },
       };
     }
-    console.log(options);
     const categories = await this.categoryDB.findMany({
       ...filter,
       skip: options.skip,
