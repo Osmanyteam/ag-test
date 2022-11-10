@@ -16,6 +16,9 @@
   },
   "author": "osmany jiron",
   "license": "MIT",
+  "engines" : { 
+    "node" : ">=16.15.0"
+  },
   "dependencies": {
     "@fastify/cors": "^8.2.0",
     "@fastify/swagger": "^8.1.0",
