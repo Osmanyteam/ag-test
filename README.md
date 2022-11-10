@@ -3,7 +3,7 @@
 * yarn
 * mysql >= 5.0.0
 
-## Setup backend
+## Setup API-REST
 ### run migrations
 ```
 npx prisma migrate deploy
@@ -15,6 +15,10 @@ mv .env.example .env
 ### Add global package dotenv-cli
 ```
 yarn global add dotenv-cli
+```
+### Run seed
+```
+yarn seed
 ```
 ### Run development
 ```
