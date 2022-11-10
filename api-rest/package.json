@@ -1,8 +1,8 @@
 {
-  "name": "fastify-hexagon-architecture",
+  "name": "api-rest",
   "version": "1.0.0",
-  "description": "Example of Fastify with Hexagon architecture",
-  "main": "index.ts",
+  "description": "api-rest example",
+  "main": "src/index.ts",
   "scripts": {
     "migration:test": "dotenv -e .env.test -- prisma migrate deploy",
     "test": "yarn migration:test && tap --ts --no-check-coverage --after=test/teardown.test.ts ",
