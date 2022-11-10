@@ -58,11 +58,11 @@ const getAnswersPaginated = async (
   request: FastifyRequest<{ Querystring: Static<typeof validation.getAnswersPaginatedQuery> }>,
   reply: FastifyReply,
 ) => {
-  const questions = await questionService.getPaginateAnswersByQuestion(request.query.questionId, {
+  const answers = await questionService.getPaginateAnswersByQuestion(request.query.questionId, {
     ...request.query,
     skip: request.query.size * request.query.page,
   });
-  reply.send(questions);
+  reply.send(answers);
 };
 
 export default {
