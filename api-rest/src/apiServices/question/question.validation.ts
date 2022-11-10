@@ -18,7 +18,18 @@ const getCategoriesPaginatedQuery = Type.Object({
   name: Type.Optional(Type.String()),
   page: Type.Number({ minimum: 1 }),
   size: Type.Number({ minimum: 2 }),
-  skip: Type.Number({ minimum: 2 })
+});
+
+const getQuestionsPaginatedQuery = Type.Object({
+  categoryId: Type.Number(),
+  page: Type.Number({ minimum: 1 }),
+  size: Type.Number({ minimum: 2 }),
+});
+
+const getAnswersPaginatedQuery = Type.Object({
+  questionId: Type.Number(),
+  page: Type.Number({ minimum: 1 }),
+  size: Type.Number({ minimum: 2 }),
 });
 
 export default { 
@@ -26,4 +37,6 @@ export default {
     createQuestionBody,
     createAnswerBody,
     getCategoriesPaginatedQuery,
+    getQuestionsPaginatedQuery,
+    getAnswersPaginatedQuery,
 }

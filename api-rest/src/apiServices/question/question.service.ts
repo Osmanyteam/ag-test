@@ -1,23 +1,11 @@
 import prisma from '../../config/prisma';
+import type { PaginateOptions, PaginateType } from '../../utils/paginated';
+import paginated from '../../utils/paginated';
 import type AnswerType from './types/answer.type';
 import type { CategoryType } from './types/category.type';
 import type QuestionType from './types/question.type';
 
-export interface PaginateType<T> {
-  page: number;
-  next: number | null;
-  previous: number | null;
-  results: T;
-  totalPages: number;
-  countResults: number;
-}
-
-export interface PaginateOptions {
-  page: number;
-  size: number;
-  skip: number;
-}
-
+type QuestionAnswerType = QuestionType & { id: number, answersPaginated: PaginateType<AnswerType> };
 export default class QuestionService {
   protected categoryDB = prisma.category;
   protected questionDB = prisma.question;
@@ -41,9 +29,9 @@ export default class QuestionService {
         category: {
           connect: {
             id: categoryId,
-          }
-        }
-      }
+          },
+        },
+      },
     });
   }
 
@@ -58,13 +46,13 @@ export default class QuestionService {
         question: {
           connect: {
             id: questionId,
-          }
-        }
-      }
+          },
+        },
+      },
     });
   }
 
-  async filterPaginateCategory(options: PaginateOptions, name?: string): Promise<PaginateType<CategoryType[]>> {
+  async filterPaginateCategory(options: PaginateOptions, name?: string): Promise<PaginateType<CategoryType>> {
     let filter = {};
     if (name) {
       filter = {
@@ -73,7 +61,6 @@ export default class QuestionService {
         },
       };
     }
-
     const categories = await this.categoryDB.findMany({
       ...filter,
       skip: options.skip,
@@ -84,17 +71,57 @@ export default class QuestionService {
       ],
       take: options.size,
     });
-    const countResults = await this.categoryDB.count(filter);
-    const totalPages = Math.ceil(countResults / options.size);
-    return {
-      page: options.page,
-      next: options.page < totalPages ? options.page + 1 : null,
-      previous: options.page > 0 ? options.page - 1 : null,
-      totalPages,
-      countResults,
-      results: categories,
-    };
+    return paginated<CategoryType>(categories, filter, this.categoryDB, options);
   }
-  // getPaginateQuestionByCategory(categoryId: Pick<CategoryEntity, 'id'>, options: PaginateOptions): Promise<PaginateType<QuestionEntity[]>>;
-  // getPaginateAnswersByQuestion(questionId: Pick<CategoryEntity, 'id'>, options: PaginateOptions): Promise<PaginateType<AnswerEntity[]>>
+
+  async getPaginateQuestionByCategory(
+    categoryId: number,
+    options: PaginateOptions,
+  ): Promise<PaginateType<QuestionAnswerType>> {
+    const filter = {
+      where: {
+        categoryId: { equals: categoryId },
+      },
+    };
+    const questions = (await this.questionDB.findMany({
+      ...filter,
+      skip: options.skip,
+      orderBy: [
+        {
+          createdAt: 'desc',
+        },
+      ],
+      take: options.size,
+    }) as unknown as QuestionAnswerType[]);
+    // we add answer to first question
+    // first question is show up in the app
+    if (questions[0]) {
+      questions[0].answersPaginated =
+        await this.getPaginateAnswersByQuestion(questions[0].id, {
+          page: 1,
+          skip: 0,
+          size: 5,
+        });
+    }
+    return paginated<QuestionAnswerType>(questions, filter, this.questionDB, options);
+  }
+
+  async getPaginateAnswersByQuestion(questionId: number, options: PaginateOptions): Promise<PaginateType<AnswerType>> {
+    const filter = {
+      where: {
+        questionId: { equals: questionId },
+      },
+    };
+    const answers = await this.answerDB.findMany({
+      ...filter,
+      skip: options.skip,
+      orderBy: [
+        {
+          createdAt: 'desc',
+        },
+      ],
+      take: options.size,
+    });
+    return paginated<AnswerType>(answers, filter, this.answerDB, options);
+  }
 }

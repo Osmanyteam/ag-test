@@ -45,5 +45,25 @@ export default (fastify: FastifyInstance, _: any, done: () => void) => {
     },
     controller.getCategoriesPaginated
   );
+
+  fastify.get<{ Querystring: Static<typeof validation.getQuestionsPaginatedQuery> }>(
+    '/question',
+    {
+      schema: {
+        querystring: validation.getQuestionsPaginatedQuery,
+      },
+    },
+    controller.getQuestionsPaginated
+  );
+
+  fastify.get<{ Querystring: Static<typeof validation.getAnswersPaginatedQuery> }>(
+    '/answer',
+    {
+      schema: {
+        querystring: validation.getAnswersPaginatedQuery,
+      },
+    },
+    controller.getAnswersPaginated
+  );
   done();
 };

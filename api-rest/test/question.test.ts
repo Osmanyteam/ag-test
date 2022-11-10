@@ -1,6 +1,5 @@
 import Server from '../src/sever';
 import tap from 'tap';
-// import prisma from '../src/config/prisma';
 import QuestionService from '../src/apiServices/question/question.service';
 
 tap.test('POST /v1/question', async (t) => {
@@ -13,7 +12,7 @@ tap.test('POST /v1/question', async (t) => {
 
   const category = await new QuestionService().createCategory({ name });
   const payload = {
-    statement: 'Who is was best CEO Job or Bill?',
+    statement: 'Who is was best CEO Jobs or Bill?',
     categoryId: category.id,
   };
   const response = await app.server.inject({
@@ -27,7 +26,7 @@ tap.test('POST /v1/question', async (t) => {
 
   t.test('POST /v1/answer', async (t) => {
     const payload = {
-      content: 'Job Bro!',
+      content: 'Jobs Bro!',
       questionId: questionResponse.id,
     };
     const response = await app.server.inject({
@@ -40,4 +39,34 @@ tap.test('POST /v1/question', async (t) => {
     t.equal(answerResponse.content, payload.content);
   });
   
+});
+
+
+tap.test('GET /v1/question?categoryId=id&page=1&size=2', async (t) => {
+  const app = new Server();
+  t.teardown(async () => {
+    await app.server.close();
+  });
+
+  const questionService = new QuestionService();
+  const category = await questionService.createCategory({ name: 'Category' });
+  const [question] = await Promise.all([
+    questionService.createQuestion(category.id, { statement: 'A'}),
+    questionService.createQuestion(category.id, { statement: 'B'}),
+    questionService.createQuestion(category.id, { statement: 'C'}),
+  ]);
+  await Promise.all([
+    questionService.createAnswer(question.id, {content: 'D'}),
+    questionService.createAnswer(question.id, {content: 'E'}),
+    questionService.createAnswer(question.id, {content: 'F'}),
+  ]);
+
+  const response = await app.server.inject({
+    url: `/v1/question?categoryId=${category.id}&page=1&size=2`,
+    method: 'GET',
+  });
+  const questionResponse = await response.json();
+  t.same(questionResponse.countResults, 3);
+  t.same(questionResponse.results[0].answersPaginated.countResults, 3);
+  t.same(questionResponse.results[0].answersPaginated.page, 1);
 });

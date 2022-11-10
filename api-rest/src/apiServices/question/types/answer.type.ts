@@ -1,7 +1,7 @@
 import type QuestionType from "./question.type";
 
 export default interface AnswerType {
-    question: QuestionType,
+    question?: QuestionType,
     content: string;
     votes: number;
     createdAt?: Date|string;
