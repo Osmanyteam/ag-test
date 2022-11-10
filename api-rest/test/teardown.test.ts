@@ -1,9 +1,9 @@
-import tap from 'tap';
 import prisma from '../src/config/prisma';
+import tap from 'tap';
 
-tap.test('remove all records', async (t) => {
+tap.test('Clear DB', async (t) => {
   await prisma.answer.deleteMany();
   await prisma.question.deleteMany();
   await prisma.category.deleteMany();
   t.endAll();
-});
+})
