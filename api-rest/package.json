@@ -5,7 +5,7 @@
   "main": "src/index.ts",
   "scripts": {
     "migration:test": "dotenv -e .env.test -- prisma migrate deploy",
-    "test": "yarn migration:test && tap --ts --no-check-coverage --after=test/teardown.test.ts ",
+    "test": "yarn migration:test && tap --ts --no-check-coverage --after=test/teardown.ts ",
     "test:watch": "yarn migration:test && tap -w --ts --no-check-coverage --after=test/teardown.js",
     "build": "tsc -p tsconfig.json",
     "start": "yarn build && node build/index.js",
@@ -17,6 +17,7 @@
   "author": "osmany jiron",
   "license": "MIT",
   "dependencies": {
+    "@fastify/cors": "^8.2.0",
     "@fastify/swagger": "^8.1.0",
     "@prisma/client": "^4.6.0",
     "@sinclair/typebox": "^0.25.2",

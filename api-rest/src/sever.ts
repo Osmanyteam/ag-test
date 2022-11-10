@@ -1,5 +1,6 @@
 import fastify, { FastifyInstance } from 'fastify';
-import questionRoutes from './apiServices/question/question.route';
+import cors from '@fastify/cors';
+import questionRoutes from './apiService/route';
 import env from './config/env';
 
 export default class Server {
@@ -7,6 +8,7 @@ export default class Server {
 
   constructor() {
     this.server = fastify({
+      exposeHeadRoutes: true,
       logger: {
         level: 'info',
         transport: {
@@ -18,7 +20,7 @@ export default class Server {
   }
 
   public listen() {
-    this.server.listen({ port: env.port }, async (err, address) => {
+    this.server.listen({ port: env.port, host: '192.168.100.8' }, async (err, address) => {
       if (err) {
         console.error(err);
         process.exit(1);
@@ -29,10 +31,18 @@ export default class Server {
 
   private async setup() {
     this.setRouter();
+    this.setCoors();
   }
 
   private async setRouter() {
     const options = { prefix: '/v1', logLevel: 'debug' };
     await this.server.register(questionRoutes, options);
+  }
+
+  private setCoors() {
+    this.server.register(cors, {
+      origin: '*',
+      methods: ['POST', 'GET', 'OPTIONS'],
+    });
   }
 }
