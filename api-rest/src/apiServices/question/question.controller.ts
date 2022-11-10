@@ -37,7 +37,7 @@ const getCategoriesPaginated = async (
 ) => {
   const { name } = request.query;
   const category = await questionService.filterPaginateCategory(
-    { ...request.query, skip: request.query.size * request.query.page },
+    { ...request.query, skip: request.query.size * (request.query.page - 1) },
     name,
   );
   reply.send(category);
@@ -49,7 +49,7 @@ const getQuestionsPaginated = async (
 ) => {
   const questions = await questionService.getPaginateQuestionByCategory(request.query.categoryId, {
     ...request.query,
-    skip: request.query.size * request.query.page,
+    skip: request.query.size * (request.query.page - 1),
   });
   reply.send(questions);
 };
@@ -60,7 +60,7 @@ const getAnswersPaginated = async (
 ) => {
   const answers = await questionService.getPaginateAnswersByQuestion(request.query.questionId, {
     ...request.query,
-    skip: request.query.size * request.query.page,
+    skip: request.query.size * (request.query.page - 1),
   });
   reply.send(answers);
 };

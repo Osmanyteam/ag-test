@@ -24,7 +24,7 @@ export default async <T>(
   return {
     page: options.page,
     nextPage: options.page < totalPages ? options.page + 1 : null,
-    previousPage: options.page > 0 ? options.page - 1 : null,
+    previousPage: options.page > 1 ? options.page - 1 : null,
     totalPages,
     countResults,
     results,

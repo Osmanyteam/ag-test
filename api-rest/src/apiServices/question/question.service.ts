@@ -61,6 +61,7 @@ export default class QuestionService {
         },
       };
     }
+    console.log(options);
     const categories = await this.categoryDB.findMany({
       ...filter,
       skip: options.skip,
