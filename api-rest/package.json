@@ -8,7 +8,7 @@
     "test": "yarn migration:test && tap --ts --no-check-coverage --after=test/teardown.test.ts ",
     "test:watch": "yarn migration:test && tap -w --ts --no-check-coverage --after=test/teardown.js",
     "build": "tsc -p tsconfig.json",
-    "start": "node build/index.js",
+    "start": "yarn build && node build/index.js",
     "dev": "nodemon --watch 'src/**' --ext 'ts,json' --ignore 'src/**/*.spec.ts' --exec ts-node src/index.ts",
     "lint": "eslint src/**/*.ts",
     "format": "eslint src/**/*.ts --fix"
