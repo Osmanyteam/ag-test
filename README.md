@@ -28,3 +28,17 @@ yarn dev
 ```
 yarn start
 ```
+
+## Setup API-REST
+### Create .env file
+```
+mv .env.example .env
+```
+### install dependencies
+```
+yarn
+```
+### Run development
+```
+yarn dev
+```
