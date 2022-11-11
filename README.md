@@ -29,7 +29,7 @@ yarn dev
 yarn start
 ```
 
-## Setup API-REST
+## Setup FRONTEND
 ### Create .env file
 ```
 mv .env.example .env
